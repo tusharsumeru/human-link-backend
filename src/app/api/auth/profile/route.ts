@@ -4,7 +4,10 @@ import { getDb } from "@/lib/mongodb";
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { phone, gotra, native, bio, occupation, matrimonialOptIn } = body;
+    const {
+      phone, gotra, native, bio, occupation, matrimonialOptIn,
+      dob, gender, address, masked_aadhaar, verified,
+    } = body;
 
     if (!phone) {
       return NextResponse.json({ error: "Phone is required to identify user" }, { status: 400 });
@@ -17,6 +20,12 @@ export async function PATCH(req: NextRequest) {
     if (bio      !== undefined) update.bio      = bio;
     if (occupation !== undefined) update.occupation = occupation;
     if (matrimonialOptIn !== undefined) update.matrimonialOptIn = matrimonialOptIn;
+    // Aadhaar (DigiLocker) verified KYC. Never store the full Aadhaar number.
+    if (dob            !== undefined) update.dob            = dob;
+    if (gender         !== undefined) update.gender         = gender;
+    if (address        !== undefined) update.address        = address;
+    if (masked_aadhaar !== undefined) update.masked_aadhaar = masked_aadhaar;
+    if (verified       !== undefined) update.verified       = verified;
 
     const result = await db.collection("users").updateOne(
       { phone },

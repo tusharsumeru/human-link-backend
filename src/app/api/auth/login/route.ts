@@ -35,6 +35,17 @@ export async function POST(req: NextRequest) {
         native: user.native,
         role: user.role,
         avatar: user.avatar,
+        // Full profile fields saved via /api/auth/profile, so a login on any
+        // device restores the complete profile.
+        bio: user.bio ?? "",
+        occupation: user.occupation ?? "",
+        matrimonialOptIn: user.matrimonialOptIn ?? false,
+        verified: user.verified ?? false,
+        photoUrl: user.photoUrl ?? "",
+        dob: user.dob ?? "",
+        gender: user.gender ?? "",
+        address: user.address ?? "",
+        masked_aadhaar: user.masked_aadhaar ?? "",
       },
     });
   } catch (err) {
